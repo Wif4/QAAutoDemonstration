@@ -5,6 +5,8 @@ import core.BaseTest;
 import core.specs.ApiSpec;
 import core.specs.ResponseSpec;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static io.restassured.RestAssured.given;
@@ -38,6 +40,16 @@ public class FirstApiTest extends BaseTest {
 
         assertNotNull(users, "Users list should not be null");
         assertFalse(users.isEmpty(), "Users list should not be empty");
-        assertNotNull(users.get(0).getId(), "User id should not be null");
+        assertNotNull(users.getFirst().getId(), "User id should not be null");
+    }
+
+    @ParameterizedTest
+    @ValueSource (ints = {1,2,3,4})
+    void getUsersId_shouldReturnUserId(Integer userId){
+        var user = userClient.getUserById(userId);
+
+        assertNotNull(user, "User should not be null");
+        assertEquals(userId, user.getId(), "Users id should be equal to" + userId);
+        assertNotNull(user.getEmail(), "Email should not be null");
     }
 }

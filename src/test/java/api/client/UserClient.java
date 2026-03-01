@@ -2,6 +2,7 @@ package api.client;
 
 import api.models.User;
 import core.specs.ApiSpec;
+import core.specs.ResponseSpec;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.Response;
 
@@ -23,5 +24,20 @@ public class UserClient {
                 .then()
                 .extract()
                 .as(new TypeRef<List<User>>() {});
+    }
+
+    public User getUserById(Integer userId) {
+
+        return  given()
+                .spec(ApiSpec.requestSpec())
+                .pathParam("id", userId)
+                .when()
+                .get("/users/{id}")
+                .then()
+                .spec(ResponseSpec.successResponse())
+                .extract()
+                .as(User.class);
+
+
     }
 }
