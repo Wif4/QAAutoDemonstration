@@ -25,9 +25,17 @@ public class FirstApiTest extends BaseTest {
 
     @Test
     void getUsers_shouldReturnUsersList() {
-        userClient.getUsers()
+        userClient.getUsersRaw()
                 .then()
                 .spec(ResponseSpec.successResponse())
                 .body("[0].id", notNullValue());
+    }
+
+    @Test
+    void getUsers_shouldReturnTypedUsers() {
+        var users = userClient.getUsers();
+
+        assert !users.isEmpty();
+        assert users.get(0).getId() != null;
     }
 }
