@@ -22,4 +22,8 @@ public class ConfigManager {
     public static String getBaseUrl() {
         return properties.getProperty("base.url");
     }
+
+    public static String getToken(){
+        return properties.getProperty("api.token");
+    }
 }
