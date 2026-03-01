@@ -12,4 +12,18 @@ public class ResponseSpec {
                 .expectResponseTime(lessThan(5000L))
                 .build();
     }
+
+    public static ResponseSpecification notFoundResponse() {
+        return new ResponseSpecBuilder()
+                .expectStatusCode(404)
+                .expectResponseTime(lessThan(5000L))
+                .build();
+    }
+
+    public static ResponseSpecification badRequestResponse() {
+        return new ResponseSpecBuilder()
+                .expectStatusCode(400)
+                .expectResponseTime(lessThan(5000L))
+                .build();
+    }
 }

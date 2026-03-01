@@ -37,7 +37,32 @@ public class UserClient {
                 .spec(ResponseSpec.successResponse())
                 .extract()
                 .as(User.class);
+    }
 
+    public User getUserByNotFoundId(Integer userId) {
 
+        return  given()
+                .spec(ApiSpec.requestSpec())
+                .pathParam("id", userId)
+                .when()
+                .get("/users/{id}")
+                .then()
+                .spec(ResponseSpec.notFoundResponse())
+                .extract()
+                .as(User.class);
+    }
+
+    public User getUserByInvalidId(char userId) {
+
+        User user = given()
+                .spec(ApiSpec.requestSpec())
+                .pathParam("id", userId)
+                .when()
+                .get("/users/{id}")
+                .then()
+                .spec(ResponseSpec.badRequestResponse())
+                .extract()
+                .as(User.class);
+        return user;
     }
 }

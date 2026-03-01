@@ -52,4 +52,20 @@ public class FirstApiTest extends BaseTest {
         assertEquals(userId, user.getId(), "Users id should be equal to" + userId);
         assertNotNull(user.getEmail(), "Email should not be null");
     }
+
+    @ParameterizedTest
+    @ValueSource (ints = {-1, 999, 1000})
+    void getUsersId_shouldReturnNotFound(Integer userId){
+        var user = userClient.getUserByNotFoundId(userId);
+
+        assertNull(user, "User should be null");
+    }
+
+    @ParameterizedTest
+    @ValueSource (chars = {65, 64})
+    void getUsersId_shouldReturnException(Character userId){
+        var user = userClient.getUserByInvalidId(userId);
+
+        assertNull(user, "User should be null");
+    }
 }
