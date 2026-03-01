@@ -2,6 +2,7 @@ package api;
 
 import core.BaseTest;
 import core.specs.ApiSpec;
+import core.specs.ResponseSpec;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -15,6 +16,6 @@ public class FirstApiTest extends BaseTest {
                 .when()
                 .get()
                 .then()
-                .statusCode(200);
+                .spec(ResponseSpec.successResponse());
     }
 }
