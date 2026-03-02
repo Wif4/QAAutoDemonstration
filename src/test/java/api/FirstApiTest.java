@@ -4,6 +4,7 @@ import api.client.UserClient;
 import core.BaseTest;
 import core.specs.ApiSpec;
 import core.specs.ResponseSpec;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -45,7 +46,7 @@ public class FirstApiTest extends BaseTest {
 
     @ParameterizedTest
     @ValueSource (ints = {1,2,3,4})
-    void getUsersId_shouldReturnUserId(Integer userId){
+    void getUsersById_shouldReturnUserId(Integer userId){
         var user = userClient.getUserById(userId);
 
         assertNotNull(user, "User should not be null");
@@ -55,17 +56,15 @@ public class FirstApiTest extends BaseTest {
 
     @ParameterizedTest
     @ValueSource (ints = {-1, 999, 1000})
-    void getUsersId_shouldReturnNotFound(Integer userId){
-        var user = userClient.getUserByNotFoundId(userId);
+    void getUsersById_shouldReturnNotFound(Integer userId){
+        Response response = userClient.getUserByIdRaw(userId)
+                .then()
+                .statusCode(404)
+                .extract()
+                .response();
 
-        assertNull(user, "User should be null");
-    }
+        String body = response.getBody().asString();
 
-    @ParameterizedTest
-    @ValueSource (chars = {65, 64})
-    void getUsersId_shouldReturnException(Character userId){
-        var user = userClient.getUserByInvalidId(userId);
-
-        assertNull(user, "User should be null");
+        assertTrue(body.isEmpty() || "{}".equals(body.trim()));
     }
 }

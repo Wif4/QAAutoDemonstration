@@ -23,46 +23,22 @@ public class UserClient {
         return getUsersRaw()
                 .then()
                 .extract()
-                .as(new TypeRef<List<User>>() {});
+                .as(new TypeRef<>() {});
     }
 
     public User getUserById(Integer userId) {
 
-        return  given()
-                .spec(ApiSpec.requestSpec())
-                .pathParam("id", userId)
-                .when()
-                .get("/users/{id}")
+        return  getUserByIdRaw(userId)
                 .then()
                 .spec(ResponseSpec.successResponse())
                 .extract()
                 .as(User.class);
     }
-
-    public User getUserByNotFoundId(Integer userId) {
-
-        return  given()
+    public Response getUserByIdRaw(Integer userId) {
+        return given()
                 .spec(ApiSpec.requestSpec())
                 .pathParam("id", userId)
                 .when()
-                .get("/users/{id}")
-                .then()
-                .spec(ResponseSpec.notFoundResponse())
-                .extract()
-                .as(User.class);
-    }
-
-    public User getUserByInvalidId(char userId) {
-
-        User user = given()
-                .spec(ApiSpec.requestSpec())
-                .pathParam("id", userId)
-                .when()
-                .get("/users/{id}")
-                .then()
-                .spec(ResponseSpec.badRequestResponse())
-                .extract()
-                .as(User.class);
-        return user;
+                .get("/users/{id}");
     }
 }
