@@ -41,4 +41,21 @@ public class UserClient {
                 .when()
                 .get("/users/{id}");
     }
+
+    public Response createUserRaw(String json) {
+        return given()
+                .spec(ApiSpec.requestSpec())
+                .body(json)
+                .when()
+                .post("/users");
+    }
+
+    public User createUser(String json) {
+        return createUserRaw(json)
+                .then()
+                .statusCode(201)
+                .extract()
+                .as(User.class);
+    }
+
 }

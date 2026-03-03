@@ -1,6 +1,11 @@
 package api;
 
 import api.client.UserClient;
+import api.models.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import core.BaseTest;
 import core.specs.ApiSpec;
 import core.specs.ResponseSpec;
@@ -66,5 +71,76 @@ public class FirstApiTest extends BaseTest {
         String body = response.getBody().asString();
 
         assertTrue(body.isEmpty() || "{}".equals(body.trim()));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            """
+    {
+      "id": 12,
+      "name": "Leanne Graham",
+      "username": "Bret",
+      "email": "Sincere@april.biz"
+    }
+    """,
+            """
+    {
+      "id": 13,
+      "name": "Anatoly Graham",
+      "username": "Bret",
+      "email": "Anatoly@april.biz"
+    }
+    """
+    })
+    void postUsers_shouldReturnUser(String json) {
+        var user = userClient.createUser(json);
+        assertNotNull(user, "User should not be null");
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node;
+        try {
+            node = mapper.readTree(json);
+        } catch (JsonMappingException e) {
+            throw new RuntimeException(e);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        assertNotNull(user.getId());
+        assertEquals(node.get("name").asText(), user.getName());
+        assertEquals(node.get("username").asText(), user.getUsername());
+        assertEquals(node.get("email").asText(), user.getEmail());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            """
+    {
+      "id": null,
+      "name": "",
+      "username": "",
+      "email": ""
+    }
+    """
+    })
+    void postUsers_shouldHandleNullFields(String json) {
+        var user = userClient.createUserRaw(json)
+                .then()
+                .statusCode(201)
+                .extract()
+                .as(User.class);
+        assertNotNull(user, "User should not be null");
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node;
+        try {
+            node = mapper.readTree(json);
+        } catch (JsonMappingException e) {
+            throw new RuntimeException(e);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        assertNotNull(user.getId());
+        assertEquals(node.get("name").asText(), user.getName());
+        assertEquals(node.get("username").asText(), user.getUsername());
+        assertEquals(node.get("email").asText(), user.getEmail());
     }
 }
