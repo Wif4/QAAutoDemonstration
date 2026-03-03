@@ -132,8 +132,6 @@ public class JsonPlaceHolderTests extends BaseTest {
         JsonNode node;
         try {
             node = mapper.readTree(json);
-        } catch (JsonMappingException e) {
-            throw new RuntimeException(e);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
