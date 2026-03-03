@@ -4,36 +4,22 @@ import api.bugred.client.RegisterClient;
 import api.bugred.model.FullUserResponse;
 import api.bugred.model.RegisterUser;
 import api.bugred.testdata.UserTestDataFactory;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import core.BaseTest;
 import io.restassured.path.json.JsonPath;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RegistrationTest extends BaseTest {
 
     private final RegisterClient registerClient = new RegisterClient();
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
-
-
-    @ParameterizedTest
-    @ValueSource(strings = {
-            """
+   @Test
+    void doRegister_shouldReturnSuccessAndBody() throws Exception
     {
-      "email": "Sincere@apriql.biz",
-      "name": "Leanne Grahamq",
-      "password": "123"
-    }
-    """})
-    void doRegister_shouldReturnSuccessAndBody(String json) throws Exception
-    {
-        RegisterUser expectedUser = objectMapper.readValue(json, RegisterUser.class);
+        RegisterUser expectedUser = UserTestDataFactory.getUniqueUser();
 
-       FullUserResponse userResponse = registerClient.doRegister(json);
+       FullUserResponse userResponse = registerClient.doRegister(expectedUser);
 
        assertThat(userResponse).isNotNull();
        assertThat(userResponse)
@@ -46,11 +32,12 @@ public class RegistrationTest extends BaseTest {
     @Test
     void doRegister_shouldReturnSuccessErrorTypeAndEmailMessage() throws Exception {
         RegisterUser registerUser = UserTestDataFactory.getUniqueUser();
-        String json = objectMapper.writeValueAsString(registerUser);
 
-        registerClient.doRegisterRaw(json); //preparation
+        registerClient.doRegisterRaw(registerUser); //preparation
 
-        String response = registerClient.doRegisterRaw(json)
+        RegisterUser duplicateMailUser = UserTestDataFactory.getUserWithEmail(registerUser.getEmail());
+
+        String response = registerClient.doRegisterRaw(duplicateMailUser)
                 .then()
                 .statusCode(200)
                 .extract()
@@ -69,15 +56,12 @@ public class RegistrationTest extends BaseTest {
     @Test
     void doRegister_shouldReturnSuccessErrorTypeAndNameMessage() throws Exception {
         RegisterUser registerUser = UserTestDataFactory.getUniqueUser();
-        String prepJson = objectMapper.writeValueAsString(registerUser);
 
-        registerClient.doRegisterRaw(prepJson); //preparation
+        registerClient.doRegisterRaw(registerUser); //preparation
 
         RegisterUser duplicateNameUser = UserTestDataFactory.getUserWithName(registerUser.getName());
 
-        String json = objectMapper.writeValueAsString(duplicateNameUser);
-
-        String response = registerClient.doRegisterRaw(json)
+        String response = registerClient.doRegisterRaw(duplicateNameUser)
                 .then()
                 .statusCode(200)
                 .extract()

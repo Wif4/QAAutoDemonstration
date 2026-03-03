@@ -1,7 +1,8 @@
 package api.bugred.model;
 
-import java.time.OffsetDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FullUserResponse extends RegisterUser{
     private String avatar;
     private Integer birthday;
