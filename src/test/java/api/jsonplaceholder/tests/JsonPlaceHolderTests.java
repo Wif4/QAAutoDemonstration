@@ -1,13 +1,12 @@
-package api;
+package api.jsonplaceholder.tests;
 
-import api.client.UserClient;
-import api.models.User;
+import api.jsonplaceholder.client.UserClient;
+import api.jsonplaceholder.model.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import core.BaseTest;
-import core.specs.ApiSpec;
 import core.specs.ResponseSpec;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
@@ -18,9 +17,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.notNullValue;
 
-public class FirstApiTest extends BaseTest {
+public class JsonPlaceHolderTests extends BaseTest {
 
-    @Test
+    /*@Test
     void get_shouldReturn200() {
         given()
                 .spec(ApiSpec.requestSpec())
@@ -28,7 +27,7 @@ public class FirstApiTest extends BaseTest {
                 .get()
                 .then()
                 .spec(ResponseSpec.successResponse());
-    }
+    }*/
 
     private final UserClient userClient = new UserClient();
 

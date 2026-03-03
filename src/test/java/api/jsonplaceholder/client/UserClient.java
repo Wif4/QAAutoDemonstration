@@ -1,6 +1,6 @@
-package api.client;
+package api.jsonplaceholder.client;
 
-import api.models.User;
+import api.jsonplaceholder.model.User;
 import core.specs.ApiSpec;
 import core.specs.ResponseSpec;
 import io.restassured.common.mapper.TypeRef;
