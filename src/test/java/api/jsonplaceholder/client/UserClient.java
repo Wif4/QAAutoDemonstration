@@ -1,6 +1,7 @@
 package api.jsonplaceholder.client;
 
 import api.jsonplaceholder.model.User;
+import core.config.ConfigManager;
 import core.specs.ApiSpec;
 import core.specs.ResponseSpec;
 import io.restassured.common.mapper.TypeRef;
@@ -14,7 +15,7 @@ public class UserClient {
 
     public Response getUsersRaw() {
         return given()
-                .spec(ApiSpec.requestSpec())
+                .spec(ApiSpec.requestSpec(ConfigManager.getJsonPlaceholderUrl()))
                 .when()
                 .get("/users");
     }
@@ -36,7 +37,7 @@ public class UserClient {
     }
     public Response getUserByIdRaw(Integer userId) {
         return given()
-                .spec(ApiSpec.requestSpec())
+                .spec(ApiSpec.requestSpec(ConfigManager.getJsonPlaceholderUrl()))
                 .pathParam("id", userId)
                 .when()
                 .get("/users/{id}");
@@ -44,7 +45,7 @@ public class UserClient {
 
     public Response createUserRaw(String json) {
         return given()
-                .spec(ApiSpec.requestSpec())
+                .spec(ApiSpec.requestSpec(ConfigManager.getJsonPlaceholderUrl()))
                 .body(json)
                 .when()
                 .post("/users");
