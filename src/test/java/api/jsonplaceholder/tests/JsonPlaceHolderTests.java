@@ -1,12 +1,12 @@
 package api.jsonplaceholder.tests;
 
-import api.jsonplaceholder.client.UserClient;
 import api.jsonplaceholder.model.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import core.BaseTest;
+import core.api.ApiClientManager;
 import core.specs.ResponseSpec;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.notNullValue;
 
 public class JsonPlaceHolderTests extends BaseTest {
@@ -29,11 +28,11 @@ public class JsonPlaceHolderTests extends BaseTest {
                 .spec(ResponseSpec.successResponse());
     }*/
 
-    private final UserClient userClient = new UserClient();
-
     @Test
     void getUsers_shouldReturnUsersList() {
-        userClient.getUsersRaw()
+        ApiClientManager
+                .getUserClient()
+                .getUsersRaw()
                 .then()
                 .spec(ResponseSpec.successResponse())
                 .body("[0].id", notNullValue());
@@ -41,7 +40,8 @@ public class JsonPlaceHolderTests extends BaseTest {
 
     @Test
     void getUsers_shouldReturnTypedUsers() {
-        var users = userClient.getUsers();
+        var users = ApiClientManager
+                .getUserClient().getUsers();
 
         assertNotNull(users, "Users list should not be null");
         assertFalse(users.isEmpty(), "Users list should not be empty");
@@ -51,7 +51,8 @@ public class JsonPlaceHolderTests extends BaseTest {
     @ParameterizedTest
     @ValueSource (ints = {1,2,3,4})
     void getUsersById_shouldReturnUserId(Integer userId){
-        var user = userClient.getUserById(userId);
+        var user = ApiClientManager
+                .getUserClient().getUserById(userId);
 
         assertNotNull(user, "User should not be null");
         assertEquals(userId, user.getId(), "Users id should be equal to" + userId);
@@ -61,7 +62,8 @@ public class JsonPlaceHolderTests extends BaseTest {
     @ParameterizedTest
     @ValueSource (ints = {-1, 999, 1000})
     void getUsersById_shouldReturnNotFound(Integer userId){
-        Response response = userClient.getUserByIdRaw(userId)
+        Response response = ApiClientManager
+                .getUserClient().getUserByIdRaw(userId)
                 .then()
                 .statusCode(404)
                 .extract()
@@ -92,15 +94,14 @@ public class JsonPlaceHolderTests extends BaseTest {
     """
     })
     void postUsers_shouldReturnUser(String json) {
-        var user = userClient.createUser(json);
+        var user = ApiClientManager
+                .getUserClient().createUser(json);
         assertNotNull(user, "User should not be null");
 
         ObjectMapper mapper = new ObjectMapper();
         JsonNode node;
         try {
             node = mapper.readTree(json);
-        } catch (JsonMappingException e) {
-            throw new RuntimeException(e);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -122,7 +123,8 @@ public class JsonPlaceHolderTests extends BaseTest {
     """
     })
     void postUsers_shouldHandleNullFields(String json) {
-        var user = userClient.createUserRaw(json)
+        var user = ApiClientManager
+                .getUserClient().createUserRaw(json)
                 .then()
                 .statusCode(201)
                 .extract()

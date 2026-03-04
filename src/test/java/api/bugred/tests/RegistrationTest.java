@@ -1,12 +1,10 @@
 package api.bugred.tests;
 
-import api.bugred.client.RegisterClient;
-import api.bugred.client.SearchClient;
 import api.bugred.model.FullUserResponse;
 import api.bugred.model.RegisterUser;
 import api.bugred.testdata.UserTestDataFactory;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import core.BaseTest;
+import core.api.ApiClientManager;
 import io.restassured.path.json.JsonPath;
 import org.junit.jupiter.api.Test;
 
@@ -18,15 +16,14 @@ import static org.awaitility.Awaitility.await;
 
 public class RegistrationTest extends BaseTest {
 
-    private final RegisterClient registerClient = new RegisterClient();
-    private final SearchClient searchClient = new SearchClient();
-
    @Test
-    void doRegister_shouldReturnSuccessAndBody() throws Exception
+    void doRegister_shouldReturnSuccessAndBody()
     {
         RegisterUser expectedUser = UserTestDataFactory.getUniqueUser();
 
-       FullUserResponse userResponse = registerClient.doRegister(expectedUser);
+       FullUserResponse userResponse = ApiClientManager
+               .getRegisterClient().
+               doRegister(expectedUser);
 
        assertThat(userResponse).isNotNull();
        assertThat(userResponse)
@@ -37,14 +34,17 @@ public class RegistrationTest extends BaseTest {
     }
 
     @Test
-    void doRegister_shouldReturnSuccessErrorTypeAndEmailMessage() throws Exception {
+    void doRegister_shouldReturnSuccessErrorTypeAndEmailMessage() {
         RegisterUser registerUser = UserTestDataFactory.getUniqueUser();
 
-        registerClient.doRegisterRaw(registerUser); //preparation
+        ApiClientManager
+               .getRegisterClient().
+                doRegisterRaw(registerUser); //preparation
 
         RegisterUser duplicateMailUser = UserTestDataFactory.getUserWithEmail(registerUser.getEmail());
 
-        String response = registerClient.doRegisterRaw(duplicateMailUser)
+        String response = ApiClientManager
+               .getRegisterClient().doRegisterRaw(duplicateMailUser)
                 .then()
                 .statusCode(200)
                 .extract()
@@ -61,14 +61,17 @@ public class RegistrationTest extends BaseTest {
     }
 
     @Test
-    void doRegister_shouldReturnSuccessErrorTypeAndNameMessage() throws Exception {
+    void doRegister_shouldReturnSuccessErrorTypeAndNameMessage() {
         RegisterUser registerUser = UserTestDataFactory.getUniqueUser();
 
-        registerClient.doRegisterRaw(registerUser); //preparation
+        ApiClientManager
+               .getRegisterClient()
+                .doRegisterRaw(registerUser); //preparation
 
         RegisterUser duplicateNameUser = UserTestDataFactory.getUserWithName(registerUser.getName());
 
-        String response = registerClient.doRegisterRaw(duplicateNameUser)
+        String response = ApiClientManager
+               .getRegisterClient().doRegisterRaw(duplicateNameUser)
                 .then()
                 .statusCode(200)
                 .extract()
@@ -85,11 +88,13 @@ public class RegistrationTest extends BaseTest {
     }
 
     @Test
-    void registerUser_shouldBeFoundBySearch() throws JsonProcessingException {
+    void registerUser_shouldBeFoundBySearch() {
 
         RegisterUser expectedUser = UserTestDataFactory.getUniqueUser();
 
-        FullUserResponse userResponseCreated = registerClient.doRegister(expectedUser);
+        FullUserResponse userResponseCreated = ApiClientManager
+               .getRegisterClient()
+                .doRegister(expectedUser);
 
 
         String responseSearched = await()
@@ -97,15 +102,15 @@ public class RegistrationTest extends BaseTest {
                 .pollInterval(500, TimeUnit.MILLISECONDS)
                 .ignoreExceptions()
                 .until(
-                        () -> searchClient.searchByEmailRaw(expectedUser.getEmail()),
+                        () -> ApiClientManager.getSearchClient()
+                                .searchByEmailRaw(expectedUser.getEmail()),
                         res -> res.getStatusCode() == 231
                 ).asString();
         JsonPath jsonPath = new JsonPath(responseSearched);
 
         List<FullUserResponse> users = jsonPath.getList("results", FullUserResponse.class);
 
-        FullUserResponse userResponseSearched = users.get(0);
-
+        FullUserResponse userResponseSearched = users.getFirst();
 
         assertThat(userResponseSearched)
                 .usingRecursiveComparison()

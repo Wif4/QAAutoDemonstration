@@ -1,0 +1,25 @@
+package core.api;
+
+import api.bugred.client.RegisterClient;
+import api.bugred.client.SearchClient;
+import api.jsonplaceholder.client.UserClient;
+
+public class ApiClientManager {
+    private static final RegisterClient registerClient = new RegisterClient();
+    private static final SearchClient searchClient = new SearchClient();
+    private static final UserClient userClient = new UserClient();
+
+    public static RegisterClient getRegisterClient() {
+        return registerClient;
+    }
+
+    public static SearchClient getSearchClient ()
+    {
+        return  searchClient;
+    }
+
+    public  static UserClient getUserClient()
+    {
+        return userClient;
+    }
+}
