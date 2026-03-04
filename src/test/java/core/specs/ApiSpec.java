@@ -8,11 +8,18 @@ import static io.restassured.filter.log.LogDetail.ALL;
 
 public class ApiSpec {
 
-    public static RequestSpecification requestSpec() {
-        return new RequestSpecBuilder()
+    public static RequestSpecification requestSpec(String baseUrl) {
+        RequestSpecBuilder builder = new RequestSpecBuilder()
+                .setBaseUri(baseUrl)
                 .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization", "Bearer " + ConfigManager.getToken())
-                .log(ALL)
-                .build();
+                .log(ALL);
+
+        String token = ConfigManager.getToken();
+
+        if (token != null && !token.isBlank()) {
+            builder.addHeader("Authorization", "Bearer " + token);
+        }
+
+        return builder.build();
     }
 }
