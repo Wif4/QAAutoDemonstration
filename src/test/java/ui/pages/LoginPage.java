@@ -1,5 +1,6 @@
 package ui.pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -20,22 +21,25 @@ public class LoginPage {
         this.webDriverWait = webDriverWait;
     }
 
+    @Step("Open login page")
     public void open() {
         driver.get("https://www.saucedemo.com/");
     }
 
+    @Step("Enter username: {username}")
     public void enterUsername(String username) {
         webDriverWait
                 .until(ExpectedConditions.visibilityOfElementLocated(usernameInput))
                 .sendKeys(username);
     }
 
+    @Step("Enter password")
     public void enterPassword(String password) {
         webDriverWait
                 .until(ExpectedConditions.visibilityOfElementLocated(passwordInput))
                 .sendKeys(password);
     }
-
+    @Step("Click login button")
     public void clickLogin() {
         webDriverWait
                 .until(ExpectedConditions.elementToBeClickable(loginButton))
