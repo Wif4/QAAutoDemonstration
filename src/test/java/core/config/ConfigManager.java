@@ -19,8 +19,12 @@ public class ConfigManager {
         }
     }
 
-    public static String getBaseUrl() {
-        return properties.getProperty("base.url");
+    public static String getBugredUrl() {
+        return properties.getProperty("bugred.url");
+    }
+
+    public static String getJsonPlaceholderUrl() {
+        return properties.getProperty("jsonplaceholder.url");
     }
 
     public static String getToken(){
