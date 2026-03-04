@@ -1,6 +1,7 @@
 package api.bugred.client;
 
 import api.bugred.model.FullUserResponse;
+import core.config.ConfigManager;
 import core.specs.ApiSpec;
 import io.restassured.response.Response;
 
@@ -10,7 +11,7 @@ public class SearchClient {
     public Response searchByEmailRaw(String email)
     {
         return given()
-                .spec(ApiSpec.requestSpec())
+                .spec(ApiSpec.requestSpec(ConfigManager.getBugredUrl()))
                 .queryParam("query", email)
                 .when()
                 .get("/tasks/rest/magicsearch");

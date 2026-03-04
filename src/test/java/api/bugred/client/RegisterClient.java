@@ -2,6 +2,7 @@ package api.bugred.client;
 
 import api.bugred.model.FullUserResponse;
 import api.bugred.model.RegisterUser;
+import core.config.ConfigManager;
 import core.specs.ApiSpec;
 import io.restassured.response.Response;
 
@@ -20,7 +21,7 @@ public class RegisterClient {
     public Response doRegisterRaw(RegisterUser registerUser)
     {
         return given()
-                .spec(ApiSpec.requestSpec())
+                .spec(ApiSpec.requestSpec(ConfigManager.getBugredUrl()))
                 .body(registerUser)
                 .when()
                 .post("/tasks/rest/doregister");
