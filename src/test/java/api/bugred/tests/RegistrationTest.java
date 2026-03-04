@@ -6,7 +6,6 @@ import api.bugred.model.FullUserResponse;
 import api.bugred.model.RegisterUser;
 import api.bugred.testdata.UserTestDataFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import core.BaseTest;
 import io.restassured.path.json.JsonPath;
 import org.junit.jupiter.api.Test;
