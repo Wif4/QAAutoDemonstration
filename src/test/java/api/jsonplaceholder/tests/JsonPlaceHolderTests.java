@@ -8,6 +8,7 @@ import core.BaseTest;
 import core.api.ApiClientManager;
 import core.specs.ResponseSpec;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -15,6 +16,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.Matchers.notNullValue;
 
+@Tag("api")
+@Tag("jsonplaceholder")
 public class JsonPlaceHolderTests extends BaseTest {
 
     /*@Test

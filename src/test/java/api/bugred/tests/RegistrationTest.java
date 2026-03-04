@@ -6,6 +6,7 @@ import api.bugred.testdata.UserTestDataFactory;
 import core.BaseTest;
 import core.api.ApiClientManager;
 import io.restassured.path.json.JsonPath;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -14,6 +15,8 @@ import java.util.concurrent.TimeUnit;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
+@Tag("api")
+@Tag("bugred")
 public class RegistrationTest extends BaseTest {
 
    @Test

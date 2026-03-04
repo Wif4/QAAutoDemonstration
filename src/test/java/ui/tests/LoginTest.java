@@ -1,13 +1,17 @@
 package ui.tests;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import ui.core.BaseUiTest;
 import ui.pages.LoginPage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Tag("ui")
+@Tag("sauceDemo")
 public class LoginTest extends BaseUiTest {
 
+    @Tag("smoke")
     @Test
     void login_shouldSucceed() {
 
@@ -20,7 +24,7 @@ public class LoginTest extends BaseUiTest {
 
         assertThat(driver.getCurrentUrl()).contains("inventory");
     }
-
+    @Tag("smoke")
     @Test
     void login_shouldFailWithWrongPassword() {
 
