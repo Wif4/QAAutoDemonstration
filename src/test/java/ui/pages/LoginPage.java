@@ -6,19 +6,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class LoginPage {
-
-    private final WebDriver driver;
-    private final WebDriverWait webDriverWait;
+public class LoginPage extends BasePage{
 
     private final By usernameInput = By.id("user-name");
     private final By passwordInput = By.id("password");
     private final By loginButton = By.id("login-button");
     private final By errorMessage = By.cssSelector("[data-test='error']");
 
-    public LoginPage(WebDriver driver, WebDriverWait webDriverWait) {
-        this.driver = driver;
-        this.webDriverWait = webDriverWait;
+    public LoginPage(WebDriver driver, WebDriverWait wait) {
+        super (driver, wait);
     }
 
     @Step("Open login page")
@@ -28,26 +24,24 @@ public class LoginPage {
 
     @Step("Enter username: {username}")
     public void enterUsername(String username) {
-        webDriverWait
+        wait
                 .until(ExpectedConditions.visibilityOfElementLocated(usernameInput))
                 .sendKeys(username);
     }
 
     @Step("Enter password")
     public void enterPassword(String password) {
-        webDriverWait
+        wait
                 .until(ExpectedConditions.visibilityOfElementLocated(passwordInput))
                 .sendKeys(password);
     }
     @Step("Click login button")
     public void clickLogin() {
-        webDriverWait
-                .until(ExpectedConditions.elementToBeClickable(loginButton))
-                .click();
+        click(loginButton);
     }
 
     public String getErrorMessage() {
-        return webDriverWait
+        return wait
                 .until(ExpectedConditions.visibilityOfElementLocated(errorMessage))
                 .getText();
     }
