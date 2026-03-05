@@ -5,7 +5,7 @@
 
 **AQA Java Automation Framework**
 -
-Pet-проект для практики автоматизации тестирования API и UI на Java.
+Проект для практики автоматизации тестирования API и UI на Java.
 
 **Используемый стек:**
 - Java 21
@@ -28,7 +28,7 @@ Pet-проект для практики автоматизации тестир
     
      Реализованные проверки: получение списка пользователей, получение пользователя по id, negative сценарии, POST запросы, проверка структуры ответа
       
-  - **Bugred Test API** - публичный сервис, исполняющий Crud операции с добавлением в БД, однако имеющий специально оставленные баги.
+  - **Bugred Test API** - публичный сервис, исполняющий Crud операции с добавлением в БД, с намеренно оставленными багами для практики тестирования.
      
      Реализованные проверки: регистрация пользователя, обработка дублирования email, обработка дублирования name, сценарий create -> search, работа с Awaitility
      Подход - DTO-модели, API client,Request/Response specs, BaseTest, Factory
@@ -70,13 +70,7 @@ To do list:
 - [x] Base UI
 - [x] Page Object UI
 - [x] Screenshot on UI test fail
-- [ ] More UI/API tests
-- [ ] Auto-Retry
-- [ ] DTO-model jsonplaceholder
-- [ ] Fluent page UI
+- [ ] additional UI/API tests
 - [ ] Component object pattern UI
-- [ ] Selenide
 - [ ] Testcontainers
-- [ ] WireMock
-- [ ] DockerEnvironment
-- [ ] DatabaseConnection
+- [ ] WireMock Mocking
