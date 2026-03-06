@@ -1,6 +1,7 @@
 package api.bugred.testdata;
 
 import api.bugred.model.RegisterUser;
+import api.bugred.model.UpdateUser;
 
 import java.util.UUID;
 
@@ -28,5 +29,15 @@ public class UserTestDataFactory {
         registerUser.setEmail(email);
         registerUser.setPassword(UUID.randomUUID().toString());
         return registerUser;
+    }
+
+    public static UpdateUser getUpdateUserWithNameChange(String email)
+    {
+        UpdateUser updateUser = new UpdateUser();
+        updateUser.setField("name");
+        updateUser.setValue(UUID.randomUUID().toString());
+        updateUser.setEmail(email);
+
+        return updateUser;
     }
 }

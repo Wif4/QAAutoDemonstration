@@ -2,6 +2,7 @@ package api.bugred.tests;
 
 import api.bugred.model.FullUserResponse;
 import api.bugred.model.RegisterUser;
+import api.bugred.model.UpdateUser;
 import api.bugred.testdata.UserTestDataFactory;
 import core.BaseTest;
 import core.api.ApiClientManager;
@@ -119,6 +120,27 @@ public class RegistrationTest extends BaseTest {
                 .usingRecursiveComparison()
                 .comparingOnlyFields("name", "email")
                 .isEqualTo(userResponseCreated);
+    }
 
+    @Test
+    void userOneField_shouldReturnSuccessMessage(){
+        RegisterUser expectedUser = UserTestDataFactory.getUniqueUser();
+        UpdateUser updatedUser = UserTestDataFactory.getUpdateUserWithNameChange(expectedUser.getEmail());
+
+        FullUserResponse userResponseCreated = ApiClientManager
+                .getRegisterClient()
+                .doRegister(expectedUser);
+
+        String responseUpdated = await()
+                .atMost(5, TimeUnit.SECONDS)
+                .pollInterval(1, TimeUnit.SECONDS)
+                .ignoreExceptions()
+                .until(
+                        () -> ApiClientManager.getUpdateClient().updateClientRaw(updatedUser),
+                        response -> response.getStatusCode() == 200
+                ).asString();
+        assertThat(responseUpdated).contains(updatedUser.getField());
+        assertThat(responseUpdated).contains(updatedUser.getValue());
+        assertThat(responseUpdated).contains(expectedUser.getEmail());
     }
 }
