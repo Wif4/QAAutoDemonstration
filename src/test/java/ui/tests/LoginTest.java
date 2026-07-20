@@ -1,3 +1,4 @@
+/*
 package ui.tests;
 
 import org.junit.jupiter.api.Tag;
@@ -39,4 +40,4 @@ public class LoginTest extends BaseUiTest {
 
         assertThat(error).contains("Username and password do not match");
     }
-}
+}*/

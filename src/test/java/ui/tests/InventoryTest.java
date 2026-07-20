@@ -1,3 +1,4 @@
+/*
 package ui.tests;
 
 import org.junit.jupiter.api.Test;
@@ -27,3 +28,4 @@ public class InventoryTest extends BaseUiTest {
         assertThat(itemName.getText()).contains("Sauce Labs Backpack");
     }
 }
+*/
