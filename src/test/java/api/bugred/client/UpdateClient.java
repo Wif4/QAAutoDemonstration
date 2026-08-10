@@ -1,6 +1,7 @@
 package api.bugred.client;
 
 import api.bugred.model.UpdateUser;
+import api.bugred.model.UpdateUserResponse;
 import core.config.ConfigManager;
 import core.specs.ApiSpec;
 import io.restassured.response.Response;
@@ -16,12 +17,12 @@ public class UpdateClient {
                 .post("/tasks/rest/useronefield");
     }
 
-    public UpdateUser updateClient(UpdateUser updateUser) {
+    public UpdateUserResponse updateClient(UpdateUser updateUser) {
         return updateClientRaw(updateUser)
                 .then()
                 .statusCode(200)
                 .extract()
                 .response()
-                .as(UpdateUser.class);
+                .as(UpdateUserResponse.class);
     }
 }
