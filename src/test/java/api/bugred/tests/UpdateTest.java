@@ -1,6 +1,6 @@
 package api.bugred.tests;
 
-import api.bugred.model.FullUserRequestResponse;
+import api.bugred.model.FullUserResponse;
 import api.bugred.model.RegisterUserRequest;
 import api.bugred.model.UpdateUserRequest;
 import api.bugred.model.UpdateUserResponse;
@@ -27,7 +27,7 @@ public class UpdateTest {
         softly.assertThat(updateResult.getMessage())
                 .contains(registerUserRequest.getEmail());
 
-        FullUserRequestResponse resultUser = UserSteps.searchUserByEmail(registerUserRequest.getEmail());
+        FullUserResponse resultUser = UserSteps.searchUserByEmail(registerUserRequest.getEmail());
 
         softly.assertThat(resultUser.getName())
                 .isEqualTo(updateUser.getValue());

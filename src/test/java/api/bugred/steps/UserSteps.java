@@ -9,19 +9,19 @@ import java.util.concurrent.TimeUnit;
 import static org.awaitility.Awaitility.await;
 
 public class UserSteps {
-    public static FullUserRequestResponse registerAndWait(RegisterUserRequest registerUserRequest) {
+    public static FullUserResponse registerAndWait(RegisterUserRequest registerUserRequest) {
         ApiClientManager
                 .getRegisterClient()
                 .doRegister(registerUserRequest);
         return searchUserByEmail(registerUserRequest.getEmail());
     }
 
-    public static FullUserRequestResponse searchUserByEmail(String email) {
+    public static FullUserResponse searchUserByEmail(String email) {
 
         JsonPath jsonPath = new JsonPath(searchResponseByEmail(email));
 
         return jsonPath
-                .getList("results", FullUserRequestResponse.class)
+                .getList("results", FullUserResponse.class)
                 .getFirst();
     }
 

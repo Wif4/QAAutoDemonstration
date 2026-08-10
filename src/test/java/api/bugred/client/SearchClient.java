@@ -1,6 +1,6 @@
 package api.bugred.client;
 
-import api.bugred.model.FullUserRequestResponse;
+import api.bugred.model.FullUserResponse;
 import core.config.ConfigManager;
 import core.specs.ApiSpec;
 import io.restassured.response.Response;
@@ -17,12 +17,12 @@ public class SearchClient {
                 .get("/tasks/rest/magicsearch");
     }
 
-    public FullUserRequestResponse searchByEmail(String email)
+    public FullUserResponse searchByEmail(String email)
     {
         return searchByEmailRaw(email)
                 .then()
                 .statusCode(200)
                 .extract()
-                .as(FullUserRequestResponse.class);
+                .as(FullUserResponse.class);
     }
 }

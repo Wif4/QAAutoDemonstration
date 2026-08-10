@@ -1,6 +1,6 @@
 package api.bugred.tests;
 
-import api.bugred.model.FullUserRequestResponse;
+import api.bugred.model.FullUserResponse;
 import api.bugred.model.RegisterUserRequest;
 import api.bugred.model.UpdateUserRequest;
 import api.bugred.testdata.UserTestDataFactory;
@@ -25,7 +25,7 @@ public class RegistrationTest extends BaseTest {
     {
         RegisterUserRequest expectedUser = UserTestDataFactory.getUniqueUser();
 
-       FullUserRequestResponse userResponse = ApiClientManager
+       FullUserResponse userResponse = ApiClientManager
                .getRegisterClient().
                doRegister(expectedUser);
 
@@ -96,7 +96,7 @@ public class RegistrationTest extends BaseTest {
 
         RegisterUserRequest expectedUser = UserTestDataFactory.getUniqueUser();
 
-        FullUserRequestResponse userResponseCreated = ApiClientManager
+        FullUserResponse userResponseCreated = ApiClientManager
                .getRegisterClient()
                 .doRegister(expectedUser);
 
@@ -112,9 +112,9 @@ public class RegistrationTest extends BaseTest {
                 ).asString();
         JsonPath jsonPath = new JsonPath(responseSearched);
 
-        List<FullUserRequestResponse> users = jsonPath.getList("results", FullUserRequestResponse.class);
+        List<FullUserResponse> users = jsonPath.getList("results", FullUserResponse.class);
 
-        FullUserRequestResponse userResponseSearched = users.getFirst();
+        FullUserResponse userResponseSearched = users.getFirst();
 
         assertThat(userResponseSearched)
                 .usingRecursiveComparison()
@@ -127,7 +127,7 @@ public class RegistrationTest extends BaseTest {
         RegisterUserRequest expectedUser = UserTestDataFactory.getUniqueUser();
         UpdateUserRequest updatedUser = UserTestDataFactory.getUpdateUserWithNameChange(expectedUser.getEmail());
 
-        FullUserRequestResponse userResponseCreated = ApiClientManager
+        FullUserResponse userResponseCreated = ApiClientManager
                 .getRegisterClient()
                 .doRegister(expectedUser);
 
