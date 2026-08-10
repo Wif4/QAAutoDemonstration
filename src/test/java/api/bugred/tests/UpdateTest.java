@@ -1,8 +1,8 @@
 package api.bugred.tests;
 
-import api.bugred.model.FullUserResponse;
-import api.bugred.model.RegisterUser;
-import api.bugred.model.UpdateUser;
+import api.bugred.model.FullUserRequestResponse;
+import api.bugred.model.RegisterUserRequest;
+import api.bugred.model.UpdateUserRequest;
 import api.bugred.model.UpdateUserResponse;
 import api.bugred.steps.UserSteps;
 import api.bugred.testdata.UserTestDataFactory;
@@ -15,19 +15,19 @@ public class UpdateTest {
     public void UpdateOneField_shouldUpdateNameField()
     {
         SoftAssertions softly = new SoftAssertions();
-        RegisterUser registerUser = UserTestDataFactory.getUniqueUser();
-        UpdateUser updateUser = UserTestDataFactory.getUpdateUserWithNameChange(registerUser.getEmail());
+        RegisterUserRequest registerUserRequest = UserTestDataFactory.getUniqueUser();
+        UpdateUserRequest updateUser = UserTestDataFactory.getUpdateUserWithNameChange(registerUserRequest.getEmail());
 
-        UserSteps.registerAndWait(registerUser);
+        UserSteps.registerAndWait(registerUserRequest);
 
         UpdateUserResponse updateResult = UserSteps.updateUserOneField(updateUser);
 
         softly.assertThat(updateResult.getMessage()).
                 contains("Поле name успешно изменено на");
         softly.assertThat(updateResult.getMessage())
-                .contains(registerUser.getEmail());
+                .contains(registerUserRequest.getEmail());
 
-        FullUserResponse resultUser = UserSteps.searchUserByEmail(registerUser.getEmail());
+        FullUserRequestResponse resultUser = UserSteps.searchUserByEmail(registerUserRequest.getEmail());
 
         softly.assertThat(resultUser.getName())
                 .isEqualTo(updateUser.getValue());

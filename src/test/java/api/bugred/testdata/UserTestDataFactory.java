@@ -1,39 +1,39 @@
 package api.bugred.testdata;
 
-import api.bugred.model.RegisterUser;
-import api.bugred.model.UpdateUser;
+import api.bugred.model.RegisterUserRequest;
+import api.bugred.model.UpdateUserRequest;
 
 import java.util.UUID;
 
 public class UserTestDataFactory {
-    public static RegisterUser getUniqueUser()
+    public static RegisterUserRequest getUniqueUser()
     {
-        RegisterUser registerUser = new RegisterUser();
-        registerUser.setName(UUID.randomUUID().toString());
-        registerUser.setEmail(UUID.randomUUID() + "@mail.ru");
-        registerUser.setPassword(UUID.randomUUID().toString());
-        return registerUser;
+        RegisterUserRequest registerUserRequest = new RegisterUserRequest();
+        registerUserRequest.setName(UUID.randomUUID().toString());
+        registerUserRequest.setEmail(UUID.randomUUID() + "@mail.ru");
+        registerUserRequest.setPassword(UUID.randomUUID().toString());
+        return registerUserRequest;
     }
-    public static RegisterUser getUserWithName(String name)
+    public static RegisterUserRequest getUserWithName(String name)
     {
-        RegisterUser registerUser = new RegisterUser();
-        registerUser.setName(name);
-        registerUser.setEmail(UUID.randomUUID() + "@mail.ru");
-        registerUser.setPassword(UUID.randomUUID().toString());
-        return registerUser;
+        RegisterUserRequest registerUserRequest = new RegisterUserRequest();
+        registerUserRequest.setName(name);
+        registerUserRequest.setEmail(UUID.randomUUID() + "@mail.ru");
+        registerUserRequest.setPassword(UUID.randomUUID().toString());
+        return registerUserRequest;
     }
-    public static RegisterUser getUserWithEmail(String email)
+    public static RegisterUserRequest getUserWithEmail(String email)
     {
-        RegisterUser registerUser = new RegisterUser();
-        registerUser.setName(UUID.randomUUID().toString());
-        registerUser.setEmail(email);
-        registerUser.setPassword(UUID.randomUUID().toString());
-        return registerUser;
+        RegisterUserRequest registerUserRequest = new RegisterUserRequest();
+        registerUserRequest.setName(UUID.randomUUID().toString());
+        registerUserRequest.setEmail(email);
+        registerUserRequest.setPassword(UUID.randomUUID().toString());
+        return registerUserRequest;
     }
 
-    public static UpdateUser getUpdateUserWithNameChange(String email)
+    public static UpdateUserRequest getUpdateUserWithNameChange(String email)
     {
-        UpdateUser updateUser = new UpdateUser();
+        UpdateUserRequest updateUser = new UpdateUserRequest();
         updateUser.setField("name");
         updateUser.setValue(UUID.randomUUID().toString());
         updateUser.setEmail(email);

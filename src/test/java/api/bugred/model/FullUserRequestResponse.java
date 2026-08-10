@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 // Response->Request type of bond?? Maybe shouldn't extend RegisterUser
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FullUserResponse extends RegisterUser{
+public class FullUserRequestResponse extends RegisterUserRequest {
     private String avatar;
     private Integer birthday;
     private String hobby;

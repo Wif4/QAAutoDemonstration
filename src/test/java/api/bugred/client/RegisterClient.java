@@ -1,7 +1,7 @@
 package api.bugred.client;
 
-import api.bugred.model.FullUserResponse;
-import api.bugred.model.RegisterUser;
+import api.bugred.model.FullUserRequestResponse;
+import api.bugred.model.RegisterUserRequest;
 import core.config.ConfigManager;
 import core.specs.ApiSpec;
 import io.qameta.allure.Step;
@@ -12,20 +12,20 @@ import static io.restassured.RestAssured.given;
 public class RegisterClient {
 
     @Step("Register user with email: {registerUser.email}")
-    public FullUserResponse doRegister(RegisterUser registerUser)
+    public FullUserRequestResponse doRegister(RegisterUserRequest registerUserRequest)
     {
-       return doRegisterRaw(registerUser)
+       return doRegisterRaw(registerUserRequest)
                 .then()
                .statusCode(200)
                .extract().
-               as(FullUserResponse.class);
+               as(FullUserRequestResponse.class);
     }
 
-    public Response doRegisterRaw(RegisterUser registerUser)
+    public Response doRegisterRaw(RegisterUserRequest registerUserRequest)
     {
         return given()
                 .spec(ApiSpec.requestSpec(ConfigManager.getBugredUrl()))
-                .body(registerUser)
+                .body(registerUserRequest)
                 .when()
                 .post("/tasks/rest/doregister");
     }

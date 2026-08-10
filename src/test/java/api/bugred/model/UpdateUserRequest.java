@@ -1,6 +1,6 @@
 package api.bugred.model;
 
-public class UpdateUser extends RegisterUser{
+public class UpdateUserRequest extends RegisterUserRequest {
      private String value;
      private String field;
 

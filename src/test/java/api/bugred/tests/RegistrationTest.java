@@ -1,8 +1,8 @@
 package api.bugred.tests;
 
-import api.bugred.model.FullUserResponse;
-import api.bugred.model.RegisterUser;
-import api.bugred.model.UpdateUser;
+import api.bugred.model.FullUserRequestResponse;
+import api.bugred.model.RegisterUserRequest;
+import api.bugred.model.UpdateUserRequest;
 import api.bugred.testdata.UserTestDataFactory;
 import core.BaseTest;
 import core.api.ApiClientManager;
@@ -23,9 +23,9 @@ public class RegistrationTest extends BaseTest {
    @Test
     void doRegister_shouldReturnSuccessAndBody()
     {
-        RegisterUser expectedUser = UserTestDataFactory.getUniqueUser();
+        RegisterUserRequest expectedUser = UserTestDataFactory.getUniqueUser();
 
-       FullUserResponse userResponse = ApiClientManager
+       FullUserRequestResponse userResponse = ApiClientManager
                .getRegisterClient().
                doRegister(expectedUser);
 
@@ -39,13 +39,13 @@ public class RegistrationTest extends BaseTest {
 
     @Test
     void doRegister_shouldReturnSuccessErrorTypeAndEmailMessage() {
-        RegisterUser registerUser = UserTestDataFactory.getUniqueUser();
+        RegisterUserRequest registerUserRequest = UserTestDataFactory.getUniqueUser();
 
         ApiClientManager
                .getRegisterClient().
-                doRegisterRaw(registerUser); //preparation
+                doRegisterRaw(registerUserRequest); //preparation
 
-        RegisterUser duplicateMailUser = UserTestDataFactory.getUserWithEmail(registerUser.getEmail());
+        RegisterUserRequest duplicateMailUser = UserTestDataFactory.getUserWithEmail(registerUserRequest.getEmail());
 
         String response = ApiClientManager
                .getRegisterClient().doRegisterRaw(duplicateMailUser)
@@ -61,18 +61,18 @@ public class RegistrationTest extends BaseTest {
         String message = jsonPath.getString("message");
 
         assertThat(type).isEqualTo("error");
-        assertThat(message).contains(registerUser.getEmail());
+        assertThat(message).contains(registerUserRequest.getEmail());
     }
 
     @Test
     void doRegister_shouldReturnSuccessErrorTypeAndNameMessage() {
-        RegisterUser registerUser = UserTestDataFactory.getUniqueUser();
+        RegisterUserRequest registerUserRequest = UserTestDataFactory.getUniqueUser();
 
         ApiClientManager
                .getRegisterClient()
-                .doRegisterRaw(registerUser); //preparation
+                .doRegisterRaw(registerUserRequest); //preparation
 
-        RegisterUser duplicateNameUser = UserTestDataFactory.getUserWithName(registerUser.getName());
+        RegisterUserRequest duplicateNameUser = UserTestDataFactory.getUserWithName(registerUserRequest.getName());
 
         String response = ApiClientManager
                .getRegisterClient().doRegisterRaw(duplicateNameUser)
@@ -94,9 +94,9 @@ public class RegistrationTest extends BaseTest {
     @Test
     void registerUser_shouldBeFoundBySearch() {
 
-        RegisterUser expectedUser = UserTestDataFactory.getUniqueUser();
+        RegisterUserRequest expectedUser = UserTestDataFactory.getUniqueUser();
 
-        FullUserResponse userResponseCreated = ApiClientManager
+        FullUserRequestResponse userResponseCreated = ApiClientManager
                .getRegisterClient()
                 .doRegister(expectedUser);
 
@@ -112,9 +112,9 @@ public class RegistrationTest extends BaseTest {
                 ).asString();
         JsonPath jsonPath = new JsonPath(responseSearched);
 
-        List<FullUserResponse> users = jsonPath.getList("results", FullUserResponse.class);
+        List<FullUserRequestResponse> users = jsonPath.getList("results", FullUserRequestResponse.class);
 
-        FullUserResponse userResponseSearched = users.getFirst();
+        FullUserRequestResponse userResponseSearched = users.getFirst();
 
         assertThat(userResponseSearched)
                 .usingRecursiveComparison()
@@ -124,10 +124,10 @@ public class RegistrationTest extends BaseTest {
 
     @Test
     void userOneField_shouldReturnSuccessMessage(){
-        RegisterUser expectedUser = UserTestDataFactory.getUniqueUser();
-        UpdateUser updatedUser = UserTestDataFactory.getUpdateUserWithNameChange(expectedUser.getEmail());
+        RegisterUserRequest expectedUser = UserTestDataFactory.getUniqueUser();
+        UpdateUserRequest updatedUser = UserTestDataFactory.getUpdateUserWithNameChange(expectedUser.getEmail());
 
-        FullUserResponse userResponseCreated = ApiClientManager
+        FullUserRequestResponse userResponseCreated = ApiClientManager
                 .getRegisterClient()
                 .doRegister(expectedUser);
 
