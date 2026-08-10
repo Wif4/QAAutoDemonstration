@@ -2,6 +2,8 @@ package api.bugred.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+//RegisterUser - tbh its RegisterUserRequest rather than user entity
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RegisterUser {
     private String email;

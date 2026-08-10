@@ -2,6 +2,10 @@ package api.bugred.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+//TODO:
+// FulluserResponse inheritant of the RegisterUser??
+// Response->Request type of bond?? Maybe shouldn't extend RegisterUser
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FullUserResponse extends RegisterUser{
     private String avatar;
