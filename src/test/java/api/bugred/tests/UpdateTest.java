@@ -9,6 +9,8 @@ import api.bugred.testdata.UserTestDataFactory;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 public class UpdateTest {
 
     @Test
@@ -17,7 +19,6 @@ public class UpdateTest {
         SoftAssertions softly = new SoftAssertions();
         RegisterUserRequest registerUserRequest = UserTestDataFactory.getUniqueUser();
         UpdateUserRequest updateUser = UserTestDataFactory.getUpdateUserWithNameChange(registerUserRequest.getEmail());
-
         UserSteps.registerAndWait(registerUserRequest);
 
         UpdateUserResponse updateResult = UserSteps.updateUserOneField(updateUser);
@@ -33,5 +34,19 @@ public class UpdateTest {
                 .isEqualTo(updateUser.getValue());
 
         softly.assertAll();
+    }
+
+    @Test
+    public void UpdateOneField_shouldReturnNotFound()
+    {
+        RegisterUserRequest registerUserRequest = UserTestDataFactory.getUniqueUser();
+        UpdateUserRequest updateUserRequest = UserTestDataFactory
+                .getUpdateUserWithNameChange(registerUserRequest.getEmail());
+
+        UpdateUserResponse userResponse = UserSteps.updateUserOneField(updateUserRequest);
+
+        assertThat(userResponse.getMessage()).contains("Пользователь с таким email не найден!");
+        assertThat(userResponse.getType()).contains("error");
+
     }
 }
