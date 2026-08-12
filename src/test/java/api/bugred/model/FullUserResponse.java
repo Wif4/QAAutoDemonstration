@@ -2,6 +2,7 @@ package api.bugred.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+//FullUserResponse takes some responsibility as Domain entity -> maybe should refactor into different entity
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FullUserResponse {
