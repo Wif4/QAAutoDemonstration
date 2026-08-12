@@ -4,25 +4,27 @@ import api.bugred.model.*;
 import core.api.ApiClientManager;
 import io.restassured.path.json.JsonPath;
 
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static org.awaitility.Awaitility.await;
 
 public class UserSteps {
-    public static FullUserResponse registerAndWait(RegisterUserRequest registerUserRequest) {
+    public static Optional <FullUserResponse> registerAndWait(RegisterUserRequest registerUserRequest) {
         ApiClientManager
                 .getRegisterClient()
                 .doRegister(registerUserRequest);
         return searchUserByEmail(registerUserRequest.getEmail());
     }
 
-    public static FullUserResponse searchUserByEmail(String email) {
+    public static Optional <FullUserResponse> searchUserByEmail(String email) {
 
+        if (email == null) {throw new IllegalArgumentException("email cannot be null in searchUserByEmail step");}
         JsonPath jsonPath = new JsonPath(searchResponseByEmail(email));
-
         return jsonPath
                 .getList("results", FullUserResponse.class)
-                .getFirst();
+                .stream()
+                .findFirst();
     }
 
     public static String searchResponseByEmail(String email) {
@@ -34,7 +36,9 @@ public class UserSteps {
                 .ignoreExceptions()
                 .until(
                         () -> ApiClientManager.getSearchClient().searchByEmailRaw(email),
-                        response -> (response.getStatusCode() == 231 || response.getStatusCode() == 230)
+                        response -> (response.getStatusCode() == 231 ||
+                                response.getStatusCode() == 230 ||
+                                response.getStatusCode() == 232 )
                 ).asString();
     }
 

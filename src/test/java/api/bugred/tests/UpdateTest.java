@@ -9,6 +9,8 @@ import api.bugred.testdata.UserTestDataFactory;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class UpdateTest {
@@ -28,9 +30,9 @@ public class UpdateTest {
         softly.assertThat(updateResult.getMessage())
                 .contains(registerUserRequest.getEmail());
 
-        FullUserResponse resultUser = UserSteps.searchUserByEmail(registerUserRequest.getEmail());
+        Optional<FullUserResponse> resultUser = UserSteps.searchUserByEmail(registerUserRequest.getEmail());
 
-        softly.assertThat(resultUser.getName())
+        softly.assertThat(resultUser.orElseThrow().getName())
                 .isEqualTo(updateUser.getValue());
 
         softly.assertAll();
